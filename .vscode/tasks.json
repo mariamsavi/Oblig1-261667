@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder}/Oblig1-261667.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+      }
+    ]
+  }
+  

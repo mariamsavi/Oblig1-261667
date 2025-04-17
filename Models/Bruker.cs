@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Oblig1_261667.Models
-
 {
     public class Bruker
     {
@@ -13,7 +12,6 @@ namespace Oblig1_261667.Models
         [Required]
         public string KontaktInfo { get; set; }
 
-        [Display(Name = "Antall Spill")]
         public int AntallSpill { get; set; }
     }
 }

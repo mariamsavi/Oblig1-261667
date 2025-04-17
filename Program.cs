@@ -1,5 +1,9 @@
-using Oblig1_261667.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Oblig1_261667.Data; // viktig!
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,3 +31,4 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.Run();
+
