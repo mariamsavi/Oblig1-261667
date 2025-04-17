@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +11,33 @@
             width: 50%;
             margin: 20px auto;
         }
+
         td {
             width: 50px;
             height: 50px;
             border: 1px solid #000;
             cursor: pointer;
         }
-        .counter, .message, .restart {
+
+        .counter,
+        .message,
+        .restart {
             text-align: center;
             margin-top: 20px;
         }
+
         .restart {
             display: none;
         }
     </style>
 </head>
+
 <body>
     <table id="colorTable"></table>
     <div class="counter">Antall celler fjernet: <span id="removedCount">0</span></div>
     <div class="message" id="gameMessage"></div>
     <div class="restart">
-        <button id="restartButton">Spill på nytt</button>
+        <button id="restartButton">Spill igjen!</button>
     </div>
 
     <script>
@@ -43,7 +50,6 @@
         let firstClickedCell = null;
         let removedCount = 0;
 
-        // Function to shuffle the colors array
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -51,7 +57,6 @@
             }
         }
 
-        // Function to initialize the table
         function initializeTable() {
             table.innerHTML = "";
             shuffle(colors);
@@ -68,30 +73,28 @@
             }
         }
 
-        // Function to handle cell click
         function handleCellClick(event) {
             const cell = event.target;
             if (firstClickedCell === null) {
                 firstClickedCell = cell;
-                cell.style.outline = "2px solid black"; // Mark the first clicked cell
+                cell.style.outline = "2px solid black";
             } else {
-                if (firstClickedCell.style.backgroundColor === cell.style.backgroundColor) {
+                if (firstClickedCell !== cell && firstClickedCell.style.backgroundColor === cell.style.backgroundColor) {
                     firstClickedCell.style.backgroundColor = "transparent";
                     cell.style.backgroundColor = "transparent";
                     removedCount += 2;
                     removedCountElement.textContent = removedCount;
                     if (removedCount === 16) {
-                        <!--gameMessageElement.textContent = "Spillet er ferdig!";-->
+                        gameMessageElement.textContent = "Spillet er ferdig 🎉  :-) ";
                         restartDiv.style.display = "block";
                     }
                 }
-                firstClickedCell.style.outline = "none"; // Remove the outline
+                firstClickedCell.style.outline = "none";
                 firstClickedCell = null;
             }
         }
 
-        // Event listener for restart button
-        restartButton.addEventListener("click", function() {
+        restartButton.addEventListener("click", function () {
             removedCount = 0;
             removedCountElement.textContent = removedCount;
             gameMessageElement.textContent = "";
@@ -99,8 +102,9 @@
             initializeTable();
         });
 
-        // Initialize the table on page load
         initializeTable();
     </script>
+
 </body>
+
 </html>
