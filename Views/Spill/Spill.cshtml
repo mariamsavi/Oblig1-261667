@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4x4 Fargetabell</title>
+    <title>Fargeslettespill</title>
     <style>
         table {
             border-collapse: collapse;
@@ -19,36 +18,49 @@
             cursor: pointer;
         }
 
-        .counter,
-        .message,
-        .restart {
+        .centered {
             text-align: center;
             margin-top: 20px;
         }
 
-        .restart {
+        .hidden {
             display: none;
         }
     </style>
 </head>
 
 <body>
+
     <table id="colorTable"></table>
-    <div class="counter">Antall celler fjernet: <span id="removedCount">0</span></div>
-    <div class="message" id="gameMessage"></div>
-    <div class="restart">
-        <button id="restartButton">Spill igjen!</button>
+
+    <div class="centered">
+        <label for="navnInput">Ditt navn:</label>
+        <input type="text" id="navnInput" placeholder="Skriv inn navnet ditt" />
+    </div>
+
+    <div class="centered" id="counterDiv">Antall celler fjernet: <span id="removedCount">0</span></div>
+
+    <div class="centered hidden" id="gameMessage"></div>
+
+    <div class="centered hidden" id="restartDiv">
+        <button id="restartButton">Spill på nytt</button>
     </div>
 
     <script>
-        const colors = ["red", "red", "blue", "blue", "yellow", "yellow", "green", "green", "purple", "purple", "orange", "orange", "pink", "pink", "cyan", "cyan"];
+        const colors = [
+            "red", "red", "blue", "blue", "yellow", "yellow", "green", "green",
+            "purple", "purple", "orange", "orange", "pink", "pink", "cyan", "cyan"
+        ];
         const table = document.getElementById("colorTable");
-        const removedCountElement = document.getElementById("removedCount");
-        const gameMessageElement = document.getElementById("gameMessage");
+        const removedCountEl = document.getElementById("removedCount");
+        const gameMessage = document.getElementById("gameMessage");
         const restartButton = document.getElementById("restartButton");
-        const restartDiv = document.querySelector(".restart");
-        let firstClickedCell = null;
+        const restartDiv = document.getElementById("restartDiv");
+        const navnInput = document.getElementById("navnInput");
+        let firstCell = null;
         let removedCount = 0;
+        let spillerNavn = "";
+        let antallFullførteSpill = 0;
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -57,7 +69,7 @@
             }
         }
 
-        function initializeTable() {
+        function initTable() {
             table.innerHTML = "";
             shuffle(colors);
             let colorIndex = 0;
@@ -66,43 +78,50 @@
                 for (let j = 0; j < 4; j++) {
                     const cell = document.createElement("td");
                     cell.style.backgroundColor = colors[colorIndex++];
-                    cell.addEventListener("click", handleCellClick);
+                    cell.addEventListener("click", handleClick);
                     row.appendChild(cell);
                 }
                 table.appendChild(row);
             }
         }
 
-        function handleCellClick(event) {
-            const cell = event.target;
-            if (firstClickedCell === null) {
-                firstClickedCell = cell;
+        function handleClick(e) {
+            const cell = e.target;
+            if (cell.style.backgroundColor === "transparent") return;
+
+            if (!firstCell) {
+                firstCell = cell;
                 cell.style.outline = "2px solid black";
             } else {
-                if (firstClickedCell !== cell && firstClickedCell.style.backgroundColor === cell.style.backgroundColor) {
-                    firstClickedCell.style.backgroundColor = "transparent";
+                if (firstCell !== cell &&
+                    firstCell.style.backgroundColor === cell.style.backgroundColor) {
+                    firstCell.style.backgroundColor = "transparent";
                     cell.style.backgroundColor = "transparent";
                     removedCount += 2;
-                    removedCountElement.textContent = removedCount;
+                    removedCountEl.textContent = removedCount;
+
                     if (removedCount === 16) {
-                        gameMessageElement.textContent = "Spillet er ferdig 🎉  :-) ";
-                        restartDiv.style.display = "block";
+                        spillerNavn = navnInput.value || "Ukjent spiller";
+                        antallFullførteSpill++;
+                        gameMessage.textContent = `Gratulerer, ${spillerNavn}🎉 :-)! Du har fullført ${antallFullførteSpill} spill.`;
+                        gameMessage.classList.remove("hidden");
+                        restartDiv.classList.remove("hidden");
                     }
                 }
-                firstClickedCell.style.outline = "none";
-                firstClickedCell = null;
+                firstCell.style.outline = "none";
+                firstCell = null;
             }
         }
 
-        restartButton.addEventListener("click", function () {
+        restartButton.addEventListener("click", () => {
             removedCount = 0;
-            removedCountElement.textContent = removedCount;
-            gameMessageElement.textContent = "";
-            restartDiv.style.display = "none";
-            initializeTable();
+            removedCountEl.textContent = removedCount;
+            gameMessage.classList.add("hidden");
+            restartDiv.classList.add("hidden");
+            initTable();
         });
 
-        initializeTable();
+        initTable();
     </script>
 
 </body>

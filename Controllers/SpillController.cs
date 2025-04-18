@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Oblig1_261667.Models;
 using Oblig1_261667.Services;
+
 namespace Oblig1_261667.Controllers
 {
     public class SpillController : Controller
@@ -15,7 +16,7 @@ namespace Oblig1_261667.Controllers
         public IActionResult Index()
         {
             var spill = _spillService.HentSpill();
-            return View("Spill", spill);
+            return View("Spill");
         }
 
         public IActionResult SpillTrekk(int ruteId)
@@ -28,7 +29,7 @@ namespace Oblig1_261667.Controllers
             }
 
             var spill = _spillService.HentSpill();
-            return View("Spill", spill);
+            return View("Spill");
         }
 
         [HttpPost]

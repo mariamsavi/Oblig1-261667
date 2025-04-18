@@ -13,5 +13,7 @@ namespace Oblig1_261667.Models
         public string KontaktInfo { get; set; }
 
         public int AntallSpill { get; set; }
+
+        public int AntallFullførteSpill { get; set; } = 0;
     }
 }

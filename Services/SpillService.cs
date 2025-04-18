@@ -1,28 +1,28 @@
 using System.Collections.Generic;
 using Oblig1_261667.Models;
 
+using Oblig1_261667.Models;
+
 namespace Oblig1_261667.Services
 {
     public class SpillService
     {
-        private static List<Rute> _spill;
+        private List<Rute> _spill = new();
+        public Bruker AktivBruker { get; private set; } = new Bruker();
 
         public SpillService()
         {
-            if (_spill == null || _spill.Count == 0)
-            {
-                StartNyttSpill();
-            }
+            StartNyttSpill();
         }
 
-        public List<Rute> HentSpill()
+        public void StartNyttSpill()
         {
-            return _spill;
+            _spill = LagNyttSpill();
         }
 
         public void FjernRute(int id)
         {
-            var rute = _spill.Find(r => r.Id == id);
+            var rute = _spill.FirstOrDefault(r => r.Id == id);
             if (rute != null)
             {
                 _spill.Remove(rute);
@@ -34,15 +34,21 @@ namespace Oblig1_261667.Services
             return _spill.Count == 0;
         }
 
-        public void StartNyttSpill()
+        public List<Rute> HentSpill()
         {
-            _spill = new List<Rute>();
+            return _spill;
+        }
 
-            // Legg til ruter (f.eks. 3x3 brett = 9 ruter)
-            for (int i = 1; i <= 9; i++)
-            {
-                _spill.Add(new Rute { Id = i, Innhold = $"Rute {i}" });
-            }
+        public void OppdaterBruker(string navn)
+        {
+            AktivBruker.Navn = navn;
+            AktivBruker.AntallFullførteSpill++;
+        }
+
+        private List<Rute> LagNyttSpill()
+        {
+
+            return Enumerable.Range(1, 16).Select(id => new Rute { Id = id, Innhold = "?" }).ToList();
         }
     }
 }
